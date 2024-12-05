@@ -143,8 +143,23 @@ def close_fingers(robot_id, thumb_joints, other_fingers_joints, thumb_positions,
             maxVelocity=0.3     # Velocità massima ridotta
         )
 
+def create_grasp_constraint(robot_id, effector_index, object_id):
+    # Crea un vincolo fisso tra la mano e il cubo
+    constraint_id = p.createConstraint(
+        parentBodyUniqueId=robot_id,
+        parentLinkIndex=effector_index,
+        childBodyUniqueId=object_id,
+        childLinkIndex=-1,
+        jointType=p.JOINT_FIXED,
+        jointAxis=[0, 0, 0],
+        parentFramePosition=[0, 0, 0],
+        childFramePosition=[0, 0, 0]
+        )
+    return constraint_id
+
+
 # Simulazione
-for step in range(800):
+for step in range(600):
     p.stepSimulation()
     time.sleep(1. / 240.)
 
@@ -159,13 +174,11 @@ for step in range(800):
         current_thumb_positions = interpolate_positions(thumb_start_positions, thumb_end_positions, finger_fraction)
         current_other_fingers_positions = interpolate_positions(other_fingers_start_positions, other_fingers_end_positions, finger_fraction)
         close_fingers(dualHandId, right_thumb_joints, right_other_fingers_joints, current_thumb_positions, current_other_fingers_positions)
+    #if step >= 500:
+        #create_grasp_constraint(dualHandId, right_effector_index, cubeId)
 
 print("Simulazione completata.")
 
-# Simulazione continua
-while True:
-    p.stepSimulation()
-    time.sleep(1. / 240.)
 
 # Disconnessione
 p.disconnect()
