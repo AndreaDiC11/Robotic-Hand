@@ -11,8 +11,6 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.setPhysicsEngineParameter(fixedTimeStep=1. / 240., numSolverIterations=150)
 p.setPhysicsEngineParameter(enableConeFriction=1)
 
-# Set gravity (disabled in this script)
-# p.setGravity(0, 0, -9.81)
 
 # Load the plane and the dual-hand robot
 planeId = p.loadURDF("plane.urdf", [0, 0, -0.3])
@@ -159,7 +157,7 @@ for step in range(1000):
         current_other_fingers_positions = interpolate_positions(other_fingers_start_positions, other_fingers_end_positions, finger_fraction)
         close_fingers(dualHandId, right_thumb_joints, right_other_fingers_joints, current_thumb_positions, current_other_fingers_positions)
 
-print("Simulation completed. Press ESC to exit.")
+print("Simulation completed.")
 
 # Keep the simulation window open
 while True:
